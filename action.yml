@@ -1,0 +1,33 @@
+name: 'Run miri tests filtering unsupported'
+description: 'Execute tests with miri and filter/format out those that failed because of unsupported functionality.'
+inputs:
+  cargoflags:
+    description: 'Flags for cargo'
+    required: false
+    default: ''
+  miriflags:
+    description: 'Flags for miri'
+    required: false
+    default: ''
+outputs:
+runs:
+  using: "composite"
+  steps:
+    - name: install miri
+      run: |
+        rustup toolchain install nightly
+        rustup +nightly component add miri
+      shell: bash
+
+    - name: install jq
+      run: |
+        sudo apt-get update
+        supd apt-get install jq
+      shell: bash
+
+    - name: execute miri
+      run: cargo +nightly miri test ${{ inputs.cargoflags }} -- -Z unstable-options --format json | jq -j --unbuffered 'include formatting.jq; main' | ./exit_err_on_failed.sh
+      shell: bash
+      env:
+        MIRIFLAGS: ${{ inputs.miriflags }}
+
