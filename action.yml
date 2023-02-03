@@ -25,8 +25,7 @@ runs:
       id: miri-execution
       run: |
         rustup default nightly
-        cd "${{ github.action_path }}"
-        cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j 'include formatting.jq; main'
+        cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j -L ${{ github.action_path }} 'include formatting.jq; main'
       shell: bash
       env:
         MIRIFLAGS: ${{ inputs.miriflags }} -Zmiri-panic-on-unsupported
