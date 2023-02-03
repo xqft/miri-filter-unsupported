@@ -5,7 +5,7 @@ EXIT=0
 while IFS='$\n' read -r line; do
   echo $line
 
-  failed="^(miri: test).*\.\.\.failed$"
+  failed="^(test).*\.\.\.failed$"
   if [[ $line =~ $failed ]]; then
     EXIT=101
   fi

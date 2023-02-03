@@ -18,9 +18,15 @@ runs:
         sudo apt-get install jq
       shell: bash
 
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+
     - name: execute miri
-      run: cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j --unbuffered 'include formatting.jq; main' | ./exit_err_on_failed.sh
+      id: miri-execution
+      run: |
+        rustup default nightly
+        cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j --unbuffered 'include formatting.jq; main' | ./exit_err_on_failed.sh
       shell: bash
       env:
-        MIRIFLAGS: ${{ inputs.miriflags }}
+        MIRIFLAGS: ${{ inputs.miriflags }} -Zmiri-panic-on-unsupported
 
