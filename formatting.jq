@@ -5,7 +5,7 @@ def format:
 
 def main:
   if .stdout? != null then 
-    if .stdout | contains("unsupported Miri functionality") then
+    if .stdout | contains("unsupported Miri functionality") or contains("unsupported operation") then
       .event |= "unsupported" | format
     else 
       format, .stdout
