@@ -20,7 +20,7 @@ runs:
       shell: bash
 
     - name: execute miri
-      run: cargo +nightly miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j --unbuffered 'include formatting.jq; main' | ./exit_err_on_failed.sh
+      run: cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j --unbuffered 'include formatting.jq; main' | ./exit_err_on_failed.sh
       shell: bash
       env:
         MIRIFLAGS: ${{ inputs.miriflags }}
