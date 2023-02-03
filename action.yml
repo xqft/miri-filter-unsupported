@@ -23,7 +23,7 @@ runs:
 
     - name: execute miri
       id: miri-execution
-      run: cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j --unbuffered 'include "formatting"; main' | ./exit_err_on_failed.sh
+      run: cargo miri test ${{ inputs.cargoflags }} --no-fail-fast -- -Z unstable-options --format json | jq -j -L ${{ github.action_path }} --unbuffered 'include "formatting"; main' | ./exit_err_on_failed.sh
       shell: bash
       env:
         MIRIFLAGS: ${{ inputs.miriflags }} -Zmiri-panic-on-unsupported
