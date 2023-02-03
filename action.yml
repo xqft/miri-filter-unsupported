@@ -13,12 +13,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: install miri
-      run: |
-        rustup toolchain install nightly
-        rustup +nightly component add miri
-      shell: bash
-
     - name: install jq
       run: |
         sudo apt update
