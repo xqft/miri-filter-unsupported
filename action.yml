@@ -21,8 +21,8 @@ runs:
 
     - name: install jq
       run: |
-        sudo apt-get update
-        supd apt-get install jq
+        sudo apt update
+        sudo apt-get install jq
       shell: bash
 
     - name: execute miri
